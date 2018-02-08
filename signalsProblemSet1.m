@@ -2,20 +2,11 @@
 clc;
 clear all;
 %superimpose sketch of x(t)
-t = linspace(0,1,100);
+t = 0:0.0101:1;
 %note that T=1 so it doesnt show up in the exponent, and also defines the
 %bounds on which we graph the signal
 x = exp(-2*pi*t);
 %evaluating each point in t at x(t) and plotting x(t) 
-figure(1)
-plot(t,x)
-%title the graph
-title('Sketch of Signal x(t) Versus the Series Terms Up to the Fifth Harmonic ')
-%labelling the x and y-axis on the graph
-xlabel('Time t (sec)')
-ylabel('Signal x(t)')
-%retaining current plot so new plots dont erase existing plots
-hold on
 
 %creating symbolic variable to use for the FS approx
 syms m
@@ -26,12 +17,18 @@ a = (1 - exp(-2*pi))/(2*pi + j*2*pi*m)*exp(j*m*2*pi*t);
 % symsum
 approximateX = symsum(real(a), m, -5, 5);
 %plotting the sketch of x(t) and the APPROXIMATION using the series terms
-plot(t, approximateX)
+plot(t, [x.', approximateX.'])
+figure(1)
+%title the graph
+title('Sketch of Signal x(t) Versus the Series Terms Up to the Fifth Harmonic ')
+%labelling the x and y-axis on the graph
+xlabel('Time t (sec)')
+ylabel('Signal x(t)')
+legend('x(t) = exp(-2*pi*t) ', 'Approximation of x(t)') 
+grid on
 
 %next, we compute the maximum magnitude of the imaginary part
 maximumImaginary = max(imag(approximateX))
-%clears existing state so new plots added clear old plots
-hold off
 
 %now we want a stem plot of the magnitude of c_n for n in [5,5], T=1
 %creating our indices
